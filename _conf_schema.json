@@ -1,0 +1,99 @@
+{
+  "flow_settings": {
+    "type": "object",
+    "description": "Flow 设置",
+    "hint": "控制群聊消息流水的记录与注入",
+    "items": {
+      "enabled": {
+        "type": "bool",
+        "description": "启用插件",
+        "default": true
+      },
+      "max_log_records": {
+        "type": "int",
+        "description": "每个群保留的最大原始消息数",
+        "hint": "0 表示不限制。原始日志只用于增量注入，AstrBot 会话历史仍由 AstrBot 自己保存/压缩。",
+        "default": 5000,
+        "slider": {
+          "min": 0,
+          "max": 50000,
+          "step": 100
+        }
+      },
+      "max_delta_messages": {
+        "type": "int",
+        "description": "单次最多注入的增量消息数",
+        "hint": "0 表示不限制；若首次启用时群聊日志很长，可设置上限避免一次注入过多。",
+        "default": 0,
+        "slider": {
+          "min": 0,
+          "max": 1000,
+          "step": 10
+        }
+      },
+      "max_delta_seconds": {
+        "type": "int",
+        "description": "单次最多注入最近多少秒内的群消息",
+        "hint": "0 表示不限制。与 max_delta_messages 同时生效，只注入同时满足两者的消息。",
+        "default": 0,
+        "slider": {
+          "min": 0,
+          "max": 86400,
+          "step": 60
+        }
+      },
+      "summarize_overflow": {
+        "type": "bool",
+        "description": "增量超预算时用 LLM 把被裁剪的旧消息压缩成摘要",
+        "hint": "开启后，超出 max_delta_messages 的旧消息不会直接丢弃，而会被压缩成 <group_summary> 块注入。",
+        "default": false
+      },
+      "summarize_overflow_min_messages": {
+        "type": "int",
+        "description": "触发摘要所需的最小被裁剪消息数",
+        "hint": "被裁剪消息少于该值时不会调用 LLM，直接丢弃。",
+        "default": 20,
+        "slider": {
+          "min": 1,
+          "max": 500,
+          "step": 1
+        }
+      },
+      "persist_delta_in_history": {
+        "type": "bool",
+        "description": "把注入的群聊增量持久化到会话历史",
+        "hint": "默认关闭：增量只提供给本次模型请求，不进 conversation.history，避免 token 累积。开启后模型可跨轮引用群聊内容，但历史会膨胀。",
+        "default": false
+      },
+      "record_self_messages": {
+        "type": "bool",
+        "description": "记录机器人自己的平台消息",
+        "hint": "仅针对非 LLM 流程产生的机器人自身平台消息；LLM 回复始终会被跳过，因为 AstrBot 已作为 assistant 历史保存。",
+        "default": false
+      },
+      "record_empty_messages": {
+        "type": "bool",
+        "description": "记录空文本消息",
+        "hint": "开启后图片、语音等无文本消息会以概要占位进入 flow。",
+        "default": true
+      },
+      "warn_builtin_ltm": {
+        "type": "bool",
+        "description": "检测到内置聊天记忆增强时输出警告",
+        "hint": "建议关闭 AstrBot 内置群聊上下文感知/聊天记忆增强，避免重复注入。",
+        "default": true
+      }
+    }
+  },
+  "debug_settings": {
+    "type": "object",
+    "description": "调试设置",
+    "items": {
+      "debug_log": {
+        "type": "bool",
+        "description": "输出调试日志",
+        "default": false
+      }
+    }
+  }
+}
