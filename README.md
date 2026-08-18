@@ -51,3 +51,9 @@
 
 - `/gflow_status`：查看当前群聊 flow 记录数、最新 seq 和当前 conversation cursor。
 - `/gflow_clear`：管理员清空当前群聊的插件原始 flow 日志和 cursor。
+
+## 参考与致谢
+
+- 原插件（v0.2.x）：[Tsukumi233/astrbot_plugin_group_context_flow](https://github.com/Tsukumi233/astrbot_plugin_group_context_flow) — 本仓库为其重构版本，保留了原始 design 与 cursor 增量注入思路。
+- AstrBot 内置群聊上下文感知（`astrbot/builtin_stars/astrbot/group_chat_context.py`）— 借鉴了通过 `req.extra_user_content_parts` 注入、富消息格式化（图片描述/引用/At 标记）的设计。
+- [esengine/deepseek-reasonix](https://github.com/esengine/deepseek-reasonix) — 借鉴了其上下文管理思想：canonical 只追加不重写、结构化 `<compaction-summary>` 摘要层、预算裁剪。
