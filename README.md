@@ -2,6 +2,13 @@
 
 将群聊消息持久化为连续 flow，并在 AstrBot 调用 LLM 前按 conversation 增量注入。
 
+## 安装
+
+- **WebUI 导入（推荐）**：AstrBot 管理面板 → 插件 → 从仓库导入，填
+  `Alice7371/astrbot_plugin_group_context_flow`
+- **手动**：`git clone` 本仓库到 AstrBot 的 `data/plugins/` 目录后，
+  在面板里重载插件
+
 ## 行为
 
 - 只处理群聊消息。
